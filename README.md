@@ -121,6 +121,8 @@ class Message {}
 **stage** :zero:
 
 - The minimal compilation unit are *modules*. The compiler is aware of modules and versions
+- Modules are a collection of classes and functions compiled to bytecodes. They are grouped in a single binary file (_cam_ files) that are loaded by the calang VM. Calang modules are not a ZIP files.
+- The bytecodes specs should be stable and evolve in backwards compatible way. It is expected that modules are distributed in binary form. 
 - Dependencies between modules are defined by the keywork `require`
 - The `requires` keyword is followed by a _module definition_. A module definition is part of the langugage syntax and it is formed as `<publisher_id>:<module_id>:<version>`
 - The version definition follows _SemVer_ and always required. No wildcards are allowed.
@@ -163,4 +165,40 @@ module acme:core:1.0.0
 requires acme:motd:1.2.1
 requires megacorp:utilities:0.4.1
 ```
+
+- Any program without the keywork `module` is considered an _anonymous module_. Anonymous modules cannot be compiled to CAM files and cannot be referred by other modules. They can only be executed from source. 
+- Anonymous module can require other modules
+
+```c#
+//file: main.ca
+// This is an anonymous module. It can be only executed from source
+require acme:motd:1.2.1
+Console.println(acme/messages/motd());
+```
+
+```bash
+>calang main.ca
+Message of the day.
+```
+
+- Even a single source file can become a module if it contains the keywork `module`. In this case it can be compile to binary distributable module. 
+
+```c#
+//file: main.ca
+module megacorp:core:1.0.0
+
+require acme:motd:1.2.1
+Console.println(acme/messages/motd());
+```
+
+```bash
+>calang build && ll
+megacorp.core.1.0.0.cam
+>calang megacorp.core.1.0.0.cam
+Message of the day.
+```
+
+
+
+
 
