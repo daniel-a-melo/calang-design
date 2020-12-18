@@ -125,7 +125,7 @@ class Message {}
 - The `requires` keyword is followed by a _module definition_. A module definition is part of the langugage syntax and it is formed as `<publisher_id>:<module_id>:<version>`
 - The version definition follows _SemVer_ and always required. No wildcards are allowed.
 - The module `std` is the standard module and does not require `publisher_id` and `version`. The module `std` is always implicitly required
-- The `requires` keyword can appear in *any* source file and must be the first statement
+- The `requires` keyword can appear in *any* source file and must be the first statement. The required module is available for all the source files of that same module
 
 ```c#
 requires acme:motd:1.2.1
@@ -133,5 +133,34 @@ requires acme:motd:1.2.1
 import {acme/messages, system/Console};
 
 println(mtod());
+```
+
+- If more the one source file requires the same module, a compile error will be generated. 
+
+```
+main.ca:7:8: error: The module acme:motd is required more the once
+
+      | main.ca:7:4
+    7 |     requires acme:motd:1.2.1
+      |              ~~~~~~~~~~~~~~~~
+    8 |     import {acme/messages, system/Console};
+    
+
+      | messages.ca:3:4
+    3 |     requires acme:motd:1.3.0
+      |              ~~~~~~~~~~~~~~~
+    4 |     import {acme/messages};    
+    
+```
+
+- Specifying dependencies in the source files is a good feature for single-file programs. For projects with multiple files it is recommended to utilize the special source file `module.ca` that accepts only certain keywords (`module`, `requires`)
+- The keywork `module` specifies a _module definition_ for the project. 
+
+```c#
+//file: module.ca
+module acme:core:1.0.0
+
+requires acme:motd:1.2.1
+requires megacorp:utilities:0.4.1
 ```
 
