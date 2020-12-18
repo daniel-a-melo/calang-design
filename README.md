@@ -26,7 +26,7 @@ The ideas listed below are classified in a staged approach, where stage 0 would 
 
 **stage** :zero:
 ```c#
-require "std";
+require std;
 namespace foo/bar;
 
 import {system};
@@ -116,4 +116,22 @@ class Message {}
 ```
 
 ###### 3 - Modules
+
+
+**stage** :zero:
+
+- The minimal compilation unit are *modules*. The compiler is aware of modules and versions
+- Dependencies between modules are defined by the keywork `require`
+- The `requires` keyword is followed by a _module definition_. A module definition is part of the langugage syntax and it is formed as `<publisher_id>:<module_id>:<version>`
+- The version definition follows _SemVer_ and always required. No wildcards are allowed.
+- The module `std` is the standard module and does not require `publisher_id` and `version`. The module `std` is always implicitly required
+- The `requires` keyword can appear in *any* source file and must be the first statement
+
+```c#
+requires acme:motd:1.2.1
+
+import {acme/messages, system/Console};
+
+println(mtod());
+```
 
