@@ -22,7 +22,7 @@
 
 The ideas listed below are classified in a staged approach, where stage 0 would be the MVP. 
 
-###### Minimal program 
+###### 1 - Minimal program 
 
 **stage** :zero:
 ```c#
@@ -43,4 +43,77 @@ fn main() {
 - A function named `main` is the entry point of the application
 - `Console` is a class defined in the namespace `system`
 - `println` is static method of the class `Console`
+
+When the implicit definitions are removed the minimal program is:
+
+```c#
+namespace foo/bar;
+
+fn main() {
+   Console.println("Hello, world");
+}
+
+```
+
+**stage** :one:
+
+- If namespace definition is omitted then all classes and functions defined in the class belong to the _root_ namespace.
+- It is possible to import all the static definitions of a class. All its static members can be referred without the class name
+- The compiler will implicitly wrap all top-level statements into a generated `main` method
+
+```c#
+import {system/Console}
+println("Hello, world");
+```
+
+###### 2 - Namespaces
+
+**stage** :zero:
+
+- Functions and classes belong to a `namespace`. Namespaces exist to avoid name clashes and have no relation to directory structure of source files
+- Namespaces are declared by the `namespace` keyword and its parts are separated by `/`
+- Classes and functions may be referred by its fully qualified names
+
+```c#
+//file: utilities.ca
+namespace utilities/console;
+
+fn salute() {
+   Console.println("Hello, world");
+}
+```
+
+```c#
+//file: animals.ca
+namespace animals/reptlies;
+
+class Lizard() {}
+```
+
+```c#
+//file: main.ca
+import {utilities/console}
+
+salute();
+const lizard = animals/reptiles/Lizard();
+
+```
+
+**stage** :one:
+
+- More than one namespace may be defined in the same file
+
+```c#
+namespace utilities/console;
+
+fn salute() {
+   Console.println("Hello, world");
+}
+
+namespace core/messages;
+
+class Message {}
+```
+
+###### 3 - Modules
 
