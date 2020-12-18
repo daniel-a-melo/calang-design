@@ -211,10 +211,78 @@ Message of the day.
 ```
 
 The command `calang main.ca` will result in an implicit compilation step whose scope contains `main.ca`, `core/date.ca`, `core/utilites.ca`
+
 The command `calang core/data.ca` will result in implicit compilation step whose scope contains `core/date.ca` and `core/utilites.ca`
 
+The command `calang build` executed in the root directory will result in an explict  compilation whose scope contains `main.ca`, `core/date.ca`, `core/utilites.ca`. 
 
+* If none of the files includes a `module` definition the compilation will fail :red_circle:
+* If more than one file includes a `module` definition the compilation will fail :red_circle:
+* If a single file in the compilation scope contains a `module` definition the compilation will succeed and the _cam_ file will be generated :green_circle:
 
+- Even a multi-file project can be executed from source. `calang main.ca` will trigger an implicit compilation step and look for top-level statements or a `main` function in `main.ca`. 
+
+```c#
+//file: core/utilities.ca
+require acme:motd:1.2.1
+fn salute() { 
+   Console.println(acme/messages/motd());
+}
+```
+
+```c#
+//file: main.ca
+fn main() {
+   salute(); // no need to import, function is defined in the root namespace  
+}
+```
+
+```bash
+>calang main.ca
+Message of the day.
+```
+
+- Usually multi-file modules will make use of `module.ca` file
+
+```bash
+>tree .
+.
+├── core
+│   ├── date.ca
+│   └── utilities.ca
+├── main.ca
+└── module.ca
+```
+
+```c#
+//file: module.ca
+module megacorp:core:1.0.0
+
+requires acme:motd:1.2.1
+```
+
+```c#
+//file: core/utilities.ca
+fn salute() { 
+   Console.println(acme/messages/motd());
+}
+```
+
+```c#
+//file: main.ca
+fn main() {
+   salute(); // no need to import, function is defined in the root namespace  
+}
+```
+
+```bash
+>calang main.ca
+Message of the day.
+>calang build && ll
+megacorp:core:1.0.0.cam
+>calang megacorp:core:1.0.0.cam
+Message of the day.
+```
 
 
 
