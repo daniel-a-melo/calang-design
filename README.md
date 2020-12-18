@@ -66,6 +66,11 @@ import {system/Console}
 println("Hello, world");
 ```
 
+```c#
+Console.println("Hello, world");
+```
+
+
 ##### 2 - Namespaces
 
 **stage** :zero:
