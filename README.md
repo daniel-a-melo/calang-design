@@ -198,6 +198,24 @@ megacorp.core.1.0.0.cam
 Message of the day.
 ```
 
+- The contents of a module are defined by the contents of the current directory. It defines the _compilation scope_
+
+```bash
+>tree .
+.
+├── core
+│   ├── date.ca
+│   └── utilities.ca
+├── main.ca
+└── README.md
+```
+
+The command `calang main.ca` will result in an implicit compilation step whose scope contains `main.ca`, `core/date.ca`, `core/utilites.ca`
+The command `calang core/data.ca` will result in implicit compilation step whose scope contains `core/date.ca` and `core/utilites.ca`
+
+
+
+
 
 
 
