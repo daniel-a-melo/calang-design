@@ -4,7 +4,7 @@
 
 ##### Strongly inspired by [wren](https://wren.io), some inspiration from [vlang](https://vlang.io/), [ziglang](https://ziglang.io)
 
-###### Drivers
+##### Drivers
 
 - C-like syntax
 - Strong modularization, packaging and versioning story. Tightly integrated into the language
@@ -12,17 +12,17 @@
 - Binary package distribution is a first-class citzen
 - Tooling should evolve hand in hand with the compiler/runtime. Tooling should not be an after-thought. The language should be as simple as the tooling can support.
 
-###### Non-goals
+##### Non-goals
 
 - Native compilation targets
 - Being simple to embed the runtime is a "nice to have", but not a driver
 - Being a pure functional language
 
-##### Initial ideas
+#### Initial ideas
 
 The ideas listed below are classified in a staged approach, where stage 0 would be the MVP. 
 
-###### 1 - Minimal program 
+##### 1 - Minimal program 
 
 **stage** :zero:
 ```c#
@@ -66,7 +66,7 @@ import {system/Console}
 println("Hello, world");
 ```
 
-###### 2 - Namespaces
+##### 2 - Namespaces
 
 **stage** :zero:
 
@@ -115,7 +115,7 @@ namespace core/messages;
 class Message {}
 ```
 
-###### 3 - Modules
+##### 3 - Modules
 
 
 **stage** :zero:
